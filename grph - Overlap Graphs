@@ -1,0 +1,22 @@
+from itertools import combinations
+f = open("rosalind_grph.txt", "r")
+N = f.readlines()
+d = {}
+
+#creating dictionary label : DNA string
+for n in N:
+    if n.startswith('>'):
+        s = ''
+        l = n[1:-1]
+    else:
+        if s == '': s = n
+        else: s += n
+    d[l] =  s.replace('\n', '')
+    
+#overlap graph k=3
+for x,y in combinations(d,2):
+    s1, s2 = d[x], d[y]
+    if s1[-3:] == s2[:3]:
+        print(x,y)
+    if s2[-3:] == s1[:3]:
+        print(y,x)
