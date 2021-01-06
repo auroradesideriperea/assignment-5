@@ -1,0 +1,30 @@
+f = open("rosalind_lcsq.txt", "r")
+N = f.readlines()
+
+#creating dictionary label : DNA string
+d = {}
+for n in N:
+    if n.startswith('>'):
+        s = ''
+        l = n[1:-1]
+    else:
+        if s == '': s = n
+        else: s += n
+    d[l] =  s.replace('\n', '') 
+    
+#naming the two strings
+dS = []
+for s in d.values(): dS.append(s)
+s,t = dS[0],dS[1]
+
+#recursive function
+def lcsq(s, t):
+    if not s or not t: return ''
+    if s[0] is t[0]:
+        return s[0] + lcsq(s[1:], t[1:])
+    sub1 = lcsq(s[1:], t)
+    sub2 = lcsq(s, t[1:])
+    if len(sub1) > len(sub2): return sub1
+    else: return sub2
+
+print(lcs(s,t))
