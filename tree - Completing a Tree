@@ -1,0 +1,6 @@
+#reading data
+f = open('rosalind_tree.txt', 'r')
+N, al = int(f.readline()), f.readlines()
+
+#property: the minimum number of edges is the difference N-len(adjacency list)-1
+print(N-len(al)-1)
