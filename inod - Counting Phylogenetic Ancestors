@@ -1,0 +1,5 @@
+f = open("rosalind_inod.txt", "r")
+N = int(f.readline())
+
+#property: the number of internal nodes of an unrooted binary tree having N leaves equals n-2    
+print(N-2)
