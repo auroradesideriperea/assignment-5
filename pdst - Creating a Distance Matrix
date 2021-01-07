@@ -1,0 +1,27 @@
+f = open("rosalind_pdst.txt", "r")
+N = f.readlines()
+
+#creating list of strings sl
+d = {}
+for n in N:
+    if n.startswith('>'):
+        s = ''
+        l = n[1:-1]
+    else:
+        if s == '': s = n
+        else: s += n
+    d[l] =  s.replace('\n', '')    
+sl = list(d.values())
+
+#function to compute p-distance
+def pd(s,t):
+    c = 0
+    for i in range(len(s)):
+        if s[i] != t[i]: c += 1
+    return("%.5f"%(float(c/len(s))))
+    
+#computing distance matrix
+for i in range(len(sl)):
+    for j in range(len(sl)):        
+        print(pd(sl[i],sl[j]), end=" ")
+    print('')
