@@ -1,0 +1,56 @@
+#same as problem edit
+f = open("rosalind_edta.txt", "r")
+N = f.readlines()
+d = {}
+#creating dictionary label : DNA string
+for n in N:
+    if n.startswith('>'):
+        s = ''
+        l = n[1:-1]
+    else:
+        if s == '': s = n
+        else: s += n
+    d[l] =  s.replace('\n', '')
+#naming the two strings, this time maintining dataset order
+dS = []
+for s in d.values(): dS.append(s)
+s,t = dS[0],dS[1]
+
+#function to compute edit distance + sequence alignment
+#first part same as last problem
+import numpy as np
+def edta(s,t):
+    size_x, size_y = len(s) + 1, len(t) + 1
+    matrix = np.zeros ((size_x, size_y))
+    for x in range(size_x): matrix [x,0] = x
+    for y in range(size_y): matrix [0,y] = y  
+    for x in range(1, size_x):
+        for y in range(1, size_y):
+            if s[x-1] == t[y-1]: matrix [x,y] = matrix[x-1,y-1]
+            else: matrix [x,y] = min(matrix[x-1,y]+1, matrix[x-1,y-1]+1, matrix[x,y-1]+1)
+    print (round(matrix[size_x-1, size_y-1]))
+    
+    #new part: backtracking the matrix to get the sequence alignment
+    #starting at the end, at each step determining which predecessor gave the minimum
+    #going back diagonally (when the letters are different) means a substitution
+    #going left or up means a deletion (in s or t, respectively)
+    sp, tp = '', ''
+    i, j = len(matrix)-1, len(matrix[0])-1
+    while (i>0 and j>0):
+                if min(matrix[i][j-1], matrix[i-1][j], matrix[i-1][j-1]) == matrix[i-1][j-1]:
+                    sp += s[i-1]
+                    tp += t[j-1]
+                    j -= 1
+                    i -= 1
+                elif matrix[i][j] == matrix[i-1][j]+1:
+                    sp += s[i-1]
+                    tp += '-'
+                    i -= 1
+                else:
+                    sp += '-'
+                    tp += t[j-1]
+                    j -= 1
+    print(sp[::-1])
+    return(tp[::-1])
+
+print(edta(s,t))
