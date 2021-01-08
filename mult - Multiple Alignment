@@ -1,0 +1,21 @@
+#used MAFFT online service to compute alignments
+#manually inserted alignments into list S
+S = ['ATAT-CCG',
+     '-T---CCG',
+     'ATGTACTG',
+     'ATGT-CTG']
+
+#calculating multiple alignment score
+def cpm(s,t):
+    c = 0
+    for i in range(len(s)):
+        if s[i] != t[i]: c -= 1
+    return(c)
+ms = 0
+for i in range(len(S)-1):
+    for j in range(i+1,len(S)):
+        ms += cpm(S[i],S[j])
+
+#printing outputs
+print(ms)
+for s in S: print(s)
